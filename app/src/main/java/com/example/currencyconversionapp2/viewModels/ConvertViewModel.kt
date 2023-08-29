@@ -1,5 +1,6 @@
 package com.example.currencyconversionapp2.viewModels
 
+import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -21,7 +22,7 @@ class ConvertViewModel: ViewModel() {
 
     var currentSelectedToCurrency = MutableStateFlow<String>("")
     var currentSelectedAmount = MutableStateFlow<Double>(0.0)
-    var convertResult = MutableStateFlow<String>("")
+    var convertResult = mutableStateOf<String>("")
 
 
 
@@ -31,7 +32,7 @@ class ConvertViewModel: ViewModel() {
 
     var errorMessage: String by mutableStateOf("")
 
-    fun convert(current: String, target: String, amount: Double, result: MutableState<String>){
+    fun convert(current: String, target: String, amount: Double){
         viewModelScope.launch {
             val apiService = APIClient.getClient()?.create(APIRemoteData::class.java)
             try {
@@ -39,28 +40,22 @@ class ConvertViewModel: ViewModel() {
 
                 val call: Call<ConversionResult> = apiService!!.getConversionResult(current, target, amount)
 
-                call!!.enqueue(object : Callback<ConversionResult> {
+                call.enqueue(object : Callback<ConversionResult> {
                     override fun onResponse(call: Call<ConversionResult>, response: Response<ConversionResult>) {
-
                         val model: ConversionResult? = response.body()
-
                         val resp =
-                            model!!.conversion_result
-
-                      //  "Response Code : " + response.code() +
-
-                                result.value = resp.toString()
+                            model?.conversion_result?:0
                         convertResult.value = resp.toString()
-                       // mutableConversionResultFlow.value = resp
                     }
                     override fun onFailure(call: Call<ConversionResult>, t: Throwable) {
-                        // we get error response from API.
-                        result.value = "Error found is : " + t.message
+
+                        Log.e("ConvertViewModel","convert Error"+t.message)
                     }
 
 
             })} catch (e : Exception){
                 errorMessage = e.message.toString()
+                 Log.e("ConvertViewModel","convert Error"+e.message)
             }
 
 

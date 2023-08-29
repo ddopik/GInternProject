@@ -84,7 +84,7 @@ fun ConvertScreen(  favouritesViewModel: FavouritesViewModel, convertViewModel: 
         mutableStateOf("")
     }
 
-    val response : MutableState<String> = remember{ mutableStateOf("") }
+
 
 //    val currencies = viewModel.currenciesFlow.collectAsState()
 //    val convert = viewModel.conversionResultFlow.collectAsState()
@@ -209,9 +209,9 @@ fun ConvertScreen(  favouritesViewModel: FavouritesViewModel, convertViewModel: 
                 })
             }
             TextField(
-                value = response.value,
+                value = convertViewModel.convertResult.value,
                 onValueChange = {
-                    response.value = it
+
                 },
                 shape = RoundedCornerShape(20.dp),
                 colors = TextFieldDefaults.textFieldColors(
@@ -232,7 +232,7 @@ fun ConvertScreen(  favouritesViewModel: FavouritesViewModel, convertViewModel: 
         }//viewModel.convertResult()
         Spacer(modifier = Modifier.height(18.dp))
         Button(
-            onClick = { convertViewModel.convert(current, target, amount, response)},
+            onClick = { convertViewModel.convert(current, target, amount)},
             shape = RoundedCornerShape(20.dp),
             modifier = Modifier
                 .fillMaxWidth()

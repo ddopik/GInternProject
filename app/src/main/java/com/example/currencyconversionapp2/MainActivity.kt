@@ -41,6 +41,7 @@ import androidx.compose.ui.unit.sp
 import com.example.currencyconversionapp.api.APIViewModel
 import com.example.currencyconversionapp.screens.compare.CompareLayout
 import com.example.currencyconversionapp.screens.convert.ConvertScreen
+import com.example.currencyconversionapp2.screens.compare.CompareViewModel
 import com.example.currencyconversionapp2.ui.theme.CurrencyConversionApp2Theme
 import com.example.currencyconversionapp2.viewModels.ConvertViewModel
 import com.example.currencyconversionapp2.viewModels.FavouritesViewModel
@@ -51,6 +52,7 @@ class MainActivity : ComponentActivity() {
     private val favViewModel: FavouritesViewModel by viewModels()
 
     private val convertViewModel: ConvertViewModel by viewModels()
+    private val compareViewModel: CompareViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,7 +90,7 @@ class MainActivity : ComponentActivity() {
                                 ConvertScreen(favouritesViewModel = favViewModel, convertViewModel = convertViewModel )
 
                             } else {
-                                CompareLayout(favViewModel)
+                                CompareLayout(compareViewModel = compareViewModel)
                             }
                         }
                     }
